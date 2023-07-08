@@ -5,10 +5,17 @@ from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
 from datetime import datetime
 
-app = Flask(__name__)
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
-load_dotenv(join(dirname(__file__), '.env'))
-db = MongoClient(os.environ['MONGODB_URI'])[os.environ['DB_NAME']]
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DB_NAME")
+
+client = MongoClient(MONGODB_URI)
+
+db = client[DB_NAME]
+
+app = Flask(__name__)
 
 @app.route('/')
 def home():
